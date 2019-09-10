@@ -5,6 +5,7 @@ import com.nektar.photosdemo.fetching.ApiInterface
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class PhotosRepository {
     private val api: ApiInterface = ApiInterface.create()
@@ -14,8 +15,9 @@ class PhotosRepository {
 
     fun fetchPhotos() : MutableLiveData<List<Photo>> {
         val data = MutableLiveData<List<Photo>>()
+        data.value = emptyList()
 
-        val call = api.getPhotos()
+        val call = api.getPhotos( Random().nextInt(8),100)
         call.enqueue(object : Callback<List<Photo>> {
             override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
             }

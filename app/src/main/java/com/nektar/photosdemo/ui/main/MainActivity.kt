@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
+//    override fun onBackPressed() {
+//        finish()
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -69,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openLogin(){
-        findNavController(R.id.nav_host_fragment).navigate(R.id.loginFragment)
+        findNavController(R.id.nav_host_fragment).navigate(R.id.action_photosFragment_to_loginFragment2)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun isUserLoggedIn() : Boolean {
+    private fun isUserLoggedIn() : Boolean {
         val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this)
         return  googleSignInAccount != null
     }

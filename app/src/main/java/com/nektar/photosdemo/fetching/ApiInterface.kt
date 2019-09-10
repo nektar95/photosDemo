@@ -8,11 +8,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Query
 
 interface ApiInterface {
-    @GET
+    @GET("list")
     @Headers("Content-Type: application/json")
-    fun getPhotos(): Call<List<Photo>>
+    fun getPhotos(@Query("page") page: Int,@Query("limit") limit: Int): Call<List<Photo>>
 
     companion object Factory {
         fun create(): ApiInterface {
