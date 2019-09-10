@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">photosDemo</string>
+    <string name="sign_out">Wyloguj</string>
 </resources>

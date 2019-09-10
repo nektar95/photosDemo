@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+        app:startDestination="@id/loginFragment">
+
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.nektar.photosdemo.ui.login.LoginFragment"
+            android:label="LoginFragment" >
+        <action
+                android:id="@+id/action_loginFragment_to_photosFragment"
+                app:destination="@id/photosFragment"
+                app:enterAnim="@anim/fade_in"
+                app:exitAnim="@anim/fade_out"
+                app:popEnterAnim="@anim/fade_in"
+                app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+            android:id="@+id/photosFragment"
+            android:name="com.nektar.photosdemo.ui.photos.PhotosFragment"
+            android:label="PhotosFragment" />
+</navigation>

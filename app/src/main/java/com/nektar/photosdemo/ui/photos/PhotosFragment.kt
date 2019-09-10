@@ -1,22 +1,23 @@
-package com.nektar.photosdemo.ui.login
+package com.nektar.photosdemo.ui.photos
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.nektar.photosdemo.R
 import com.nektar.photosdemo.di.module.FragmentModule
-import kotlinx.android.synthetic.main.main_fragment.*
 import com.nektar.photosdemo.di.component.DaggerFragmentComponent
 import com.nektar.photosdemo.ui.base.BaseFragment
+import com.nektar.photosdemo.ui.login.LoginViewModel
+import kotlinx.android.synthetic.main.photo_fragment.*
 
-class LoginFragment : BaseFragment() {
+class PhotosFragment : BaseFragment() {
 
-    private lateinit var viewModel: LoginViewModel
+//    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModelLogin: LoginViewModel
+    private lateinit var viewModel: PhotosViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,23 +36,21 @@ class LoginFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        return inflater.inflate(R.layout.photo_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run {
+        viewModelLogin = activity?.run {
             ViewModelProviders.of(this).get(LoginViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        button_login.setOnClickListener {
-            viewModel.singIn()
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(PhotosViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        signOutBtn.setOnClickListener {
+            viewModelLogin.singOut()
         }
-        viewModel.mail.observe(this, Observer<String> {
-            //quick way to check if logged in
-            if(it.isNotEmpty()) {
-                findNavController().navigate(R.id.action_loginFragment_to_photosFragment)
-            }
-        })
     }
 }
