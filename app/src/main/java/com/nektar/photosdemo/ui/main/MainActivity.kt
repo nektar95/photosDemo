@@ -4,19 +4,23 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.nektar.photosdemo.R
-import com.nektar.photosdemo.di.component.DaggerActivityComponent
-import com.nektar.photosdemo.di.module.ActivityModule
+import com.nektar.photosdemo.di.Injectable
 import com.nektar.photosdemo.ui.login.LoginViewModel
+import dagger.android.support.HasSupportFragmentInjector
 import java.lang.Exception
+import dagger.android.DispatchingAndroidInjector
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
 
     /**
      * stroring google stuff here, becouse dont want to store activity in viewmodel
@@ -30,23 +34,30 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
-//    override fun onBackPressed() {
-//        finish()
-//    }
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+
+    override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
+        return dispatchingAndroidInjector
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        injectDependency()
 
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(LoginViewModel::class.java)
 
         checkLogin()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         /**
          * init viewmodel to observe login changes
          */
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
         viewModel.logged.observe(this,Observer<Boolean>{
             if(it){
                 val signInIntent = googleSignInClient.signInIntent
@@ -86,13 +97,5 @@ class MainActivity : AppCompatActivity() {
     private fun isUserLoggedIn() : Boolean {
         val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(this)
         return  googleSignInAccount != null
-    }
-
-    private fun injectDependency() {
-        val activityComponent = DaggerActivityComponent.builder()
-            .activityModule(ActivityModule(this))
-            .build()
-
-        activityComponent.inject(this)
     }
 }

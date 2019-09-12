@@ -26,15 +26,17 @@
                     android:layout_height="match_parent"
                     app:items="@{viewModel.items}" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signOutBtn"
-                android:text="@string/sign_out"
-                android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/common_google_signin_btn_text_light"
+                android:text="@string/sign_out"
+                android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,31 +1,27 @@
 package com.nektar.photosdemo
 
+import android.app.Activity
 import android.app.Application
-import com.nektar.photosdemo.di.component.ApplicationComponent
-import com.nektar.photosdemo.di.component.DaggerApplicationComponent
-import com.nektar.photosdemo.di.module.ApplicationModule
+import com.nektar.photosdemo.di.AppInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
 
-class ThisApplication : Application() {
+class ThisApplication : Application(), HasActivityInjector {
 
-    lateinit var component: ApplicationComponent
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
-        setup()
+        initializeAppInjector()
     }
 
-    fun setup() {
-        component = DaggerApplicationComponent.builder()
-            .applicationModule(ApplicationModule(this)).build()
-        component.inject(this)
+    private fun initializeAppInjector() {
+        AppInjector.init(this)
     }
 
-    fun getApplicationComponent(): ApplicationComponent {
-        return component
-    }
-
-    companion object {
-        lateinit var instance: ThisApplication private set
+    override fun activityInjector(): DispatchingAndroidInjector<Activity>? {
+        return dispatchingAndroidInjector
     }
 }

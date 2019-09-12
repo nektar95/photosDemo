@@ -1,18 +1,19 @@
 package com.nektar.photosdemo.di.module
 
-import android.app.Application
+import com.nektar.photosdemo.fetching.ApiInterface
+import com.nektar.photosdemo.ui.photos.model.PhotosRepository
 import dagger.Module
 import dagger.Provides
-import com.nektar.photosdemo.ThisApplication
 import javax.inject.Singleton
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
 
-
-@Module
-class ApplicationModule(private val baseApp: ThisApplication) {
-
-    @Provides
+@Module(includes = [(ViewModelModule::class)])
+class ApplicationModule {
     @Singleton
-    fun provideApplication(): Application {
-        return baseApp
+    @Provides
+    fun providesApiInterface(): ApiInterface {
+        return ApiInterface.create()
     }
+
 }
